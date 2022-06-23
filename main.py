@@ -1,19 +1,29 @@
 from flask import Flask, request, make_response, redirect, render_template
 
 
-app = Flask(__name__)
-
 to_do_list = ['Hacer curso de Flask', 'Hacer la compra', 'Hacer examen de carrera']
+
+app = Flask(__name__, template_folder='./templates', static_folder='./static')
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('404.html', error=error)
+
+
+@app.errorhandler(500)
+def server_error(error):
+    return render_template('500.html', error=error)
 
 
 @app.route('/')
 def index():
-    user_ip = request.remote_addr
+    # user_ip = request.remote_addr
 
-    response = make_response(redirect('/welcome'))
-    response.set_cookie('user_ip', user_ip)
+    # response = make_response(redirect('/welcome'))
+    # response.set_cookie('user_ip', user_ip)
 
-    return response
+    # return response
+    raise(Exception('500 error'))
 
 
 @app.route('/welcome')

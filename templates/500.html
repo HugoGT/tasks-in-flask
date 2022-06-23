@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ super() }}
+    500 Internal Server Error
+{% endblock title %}
+
+{% block content %}
+    <h1>Error en el Servidor</h1>
+    <p>Estamos trabajando para solucionarlo, intente recargar la página en unos minutos</p>
+    <p>{{ error }}</p>
+{% endblock content %}
