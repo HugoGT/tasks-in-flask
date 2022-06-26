@@ -1,19 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <title>
-        {% block title %}To do list | {% endblock title %}
-    </title>
-</head>
-<body>
-    <header>
-        {% include 'navbar.html' %}
-    </header>
+{% extends 'bootstrap/base.html' %}
+{% block head %}
+  {{ super() }}
+  <title>
+      {% block title %}To do list | {% endblock title %}
+  </title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock head %}
+{% block body %}
+  {% block navbar %}
+    {% include 'navbar.html' %}
     {% block content %}
     {% endblock content %}
-</body>
-</html>
+  {% endblock navbar %}
+{% endblock body %}
