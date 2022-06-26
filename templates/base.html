@@ -1,4 +1,5 @@
 {% extends 'bootstrap/base.html' %}
+
 {% block head %}
   {{ super() }}
   <title>
@@ -9,7 +10,21 @@
 {% block body %}
   {% block navbar %}
     {% include 'navbar.html' %}
-    {% block content %}
-    {% endblock content %}
   {% endblock navbar %}
+
+  {% for message in get_flashed_messages() %}
+    <div class="alert alert-success alert-dismissible">
+      <button type="button"
+              data-dismiss="alert"
+              class="close">
+        &times;
+      </button>
+      {{ message }}
+    </div>
+  {% endfor %}
+
+  {% block content %}  {% endblock content %}
+  {% block scripts %}
+    {{ super() }}
+  {% endblock scripts %}
 {% endblock body %}
