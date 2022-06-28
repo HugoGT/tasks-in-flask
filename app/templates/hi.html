@@ -18,10 +18,6 @@
     <a href="{{ url_for('index') }}">Ir a inicio</a>
   {% endif %}
 
-  <div>
-    {{ wtf.quick_form(login_form) }}
-  </div>
-
   <ul>
     {% for to_do in to_do_list %}
       {{ macros.render_to_do(to_do) }}
