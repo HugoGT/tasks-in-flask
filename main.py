@@ -1,15 +1,22 @@
-from flask import Flask, request, make_response, redirect, render_template, session, url_for, flash
-from flask_bootstrap import Bootstrap
 from forms import LoginForm
+from unittest import TextTestRunner, TestLoader
+
+from flask_bootstrap import Bootstrap
+from flask import Flask, request, make_response, redirect, render_template, session, url_for, flash
 
 
 to_do_list = ['Hacer curso de Flask', 'Hacer la compra', 'Hacer examen de carrera']
-
 
 app = Flask(__name__, template_folder='./templates', static_folder='./static')
 bootstrap = Bootstrap(app)
 
 app.config['SECRET_KEY'] = 'Clave secreta'
+
+
+@app.cli.command()
+def test():
+    tests = TestLoader().discover('tests')
+    TextTestRunner().run(tests)
 
 
 @app.errorhandler(404)
@@ -33,7 +40,7 @@ def index():
 
 
 @app.route('/welcome', methods=['GET', 'POST'])
-def greeting():
+def welcome():
     user_ip = session.get('user_ip')
     username = session.get('username')
     login_form = LoginForm()
