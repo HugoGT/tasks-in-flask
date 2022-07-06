@@ -1,13 +1,12 @@
 from unittest import TextTestRunner, TestLoader
 
-from flask import request, make_response, redirect, render_template, session
+from flask import make_response, redirect, render_template, flash, url_for
 from flask_login import login_required, current_user
 
 from app import create_app
-from app.firestore_service import get_users, get_tasks
+from app.models import TaskForm, DeleteTaskForm, UpdateTaskForm
+from app.firestore_service import put_task, update_task, delete_task, get_tasks
 
-
-to_do_list = ['Hacer curso de Flask', 'Hacer la compra', 'Hacer examen de carrera']
 
 app = create_app()
 
@@ -30,24 +29,48 @@ def server_error(error):
 
 @app.route('/')
 def index():
-    user_ip = request.remote_addr
 
     response = make_response(redirect('/welcome'))
-    session['user_ip'] = user_ip
 
     return response
 
 
-@app.route('/welcome', methods=['GET'])
+@app.route('/welcome', methods=['GET', 'POST'])
 @login_required
 def welcome():
-    user_ip = session.get('user_ip')
     username = current_user.id
+    task_form = TaskForm()
+    delete_form = DeleteTaskForm()
+    update_form = UpdateTaskForm()
+
+    if task_form.validate_on_submit():
+        put_task(user_id=username, description=task_form.description.data)
+
+        flash('La tarea se creó con éxito!')
 
     context = {
-        'user_ip': user_ip,
-        'to_do_list': get_tasks(user_id=username),
         'username': username,
+        'task_form': task_form,
+        'delete_form': delete_form,
+        'update_form': update_form,
+        'tasks': get_tasks(user_id=username),
     }
 
     return render_template('hi.html', **context)
+
+
+@app.route('/tasks/update/<task_id>/<int:done>', methods=['POST'])
+def update(task_id, done):
+    user_id = current_user.id
+
+    update_task(user_id, task_id, done)
+
+    return redirect(url_for('welcome'))
+
+
+@app.route('/tasks/delete/<task_id>', methods=['POST'])
+def delete(task_id):
+    user_id = current_user.id
+    delete_task(user_id, task_id)
+
+    return redirect(url_for('welcome'))

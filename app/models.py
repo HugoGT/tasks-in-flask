@@ -12,6 +12,19 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Enviar')
 
 
+class TaskForm(FlaskForm):
+    description = StringField('Descripción', validators=[DataRequired()])
+    submit = SubmitField('Crear')
+
+
+class UpdateTaskForm(FlaskForm):
+    submit = SubmitField('Actualizar')
+
+
+class DeleteTaskForm(FlaskForm):
+    submit = SubmitField('Borrar')
+
+
 class UserData:
     def __init__(self, username, password):
         self.username = username

@@ -12,15 +12,15 @@
     <h1>Bienvenido {{ username | capitalize }}</h1>
   {% endif %}
 
-  {% if user_ip %}
-    <h3>Hola, tu IP es {{ user_ip }}</h3>
-  {% else %}
-    <a href="{{ url_for('index') }}">Ir a inicio</a>
-  {% endif %}
+  <div class="container">
+    <h2>Crear nueva tarea</h2>
+    {{ wtf.quick_form(task_form) }}
+  </div>
 
-  <ul>
-    {% for to_do in to_do_list %}
-      {{ macros.render_to_do(to_do) }}
+  <ul class="list-group">
+    {% for task in tasks %}
+      {{ macros.render_task(task, update_form, delete_form) }}
     {% endfor %}
   </ul>
+
 {% endblock content %}

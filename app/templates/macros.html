@@ -1,3 +1,21 @@
-{% macro render_to_do(to_do) %}
-  <li>{{ to_do.to_dict().description }}</li>
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% macro render_task(task, update_form, delete_form) %}
+<li class="list-group-item">
+  <span class="badge">
+    {%if task.to_dict().done %}
+    Done
+    {% else %}
+    To do
+    {% endif %}
+  </span>
+  {{ task.to_dict().description }}
+
+  <button type="button" class="btn btn-light">
+    {{ wtf.quick_form(delete_form, action=url_for('delete', task_id=task.id)) }}
+  </button>
+  <button type="button" class="btn btn-light">
+    {{ wtf.quick_form(update_form, action=url_for('update', task_id=task.id, done=task.to_dict().done)) }}
+  </button>
+</li>
 {% endmacro %}
