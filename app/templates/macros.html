@@ -4,9 +4,9 @@
 <li class="list-group-item">
   <span class="badge">
     {%if task.to_dict().done %}
-    Done
+      Hecho
     {% else %}
-    To do
+      Por hacer
     {% endif %}
   </span>
   {{ task.to_dict().description }}
